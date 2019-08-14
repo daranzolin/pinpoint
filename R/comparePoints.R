@@ -5,14 +5,18 @@
 #' @import htmlwidgets
 #'
 #' @export
-comparePoints <- function(.data, x) {
+comparePoints <- function(.data, x, fill, title = "", axisFormat = ",", jitterWidth = 0) {
   
   x <- rlang::enquo(x)
-  out_df <- as.data.frame(subset(.data, select = c(tidyselect::vars_select(names(.data), !!x))))
-  names(out_df) <- "x"
+  fill <- rlang::enquo(fill)
+  out_df <- as.data.frame(subset(.data, select = c(tidyselect::vars_select(names(.data), !!x, !!fill))))
+  names(out_df) <- c("x", "fill")
 
   x = list(
-    data = out_df
+    data = out_df,
+    title = title,
+    axisFormat = axisFormat,
+    jitterWidth = jitterWidth
   )
 
   htmlwidgets::createWidget(

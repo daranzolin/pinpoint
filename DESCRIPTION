@@ -1,12 +1,13 @@
 Package: comparePoints
-Title: What the Package Does (one line, title case)
+Title: Compare numeric points interactively across a single axis
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("David", "Ranzolin", email = "daranzolin@gmail.com", role = c("aut", "cre"))
+Description: Align points across a single axis. Interactively explore their proximal relationships.
 Depends: R (>= 3.6.0)
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
     tidyselect,
     rlang
+RoxygenNote: 6.1.1

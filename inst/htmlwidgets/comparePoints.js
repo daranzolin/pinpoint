@@ -19,8 +19,6 @@ HTMLWidgets.widget({
                     .append("svg")
                     .style("width", "100%")
                     .style("height", "100%");
-
-                    /*
                     
         let roundNumber = d3.format(".2f");
         let formatPercent = d3.format(".0%");
@@ -69,8 +67,6 @@ HTMLWidgets.widget({
               });
 
         svg.call(tip); */
-        
-        /*
       
         circles.on("mouseover", function() {
       
@@ -129,7 +125,6 @@ HTMLWidgets.widget({
             });
   
             svg.append("g").call(xAxis); 
-            */
             
 
       },

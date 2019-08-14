@@ -9,6 +9,7 @@ comparePoints <- function(.data, x) {
   
   x <- rlang::enquo(x)
   out_df <- as.data.frame(subset(.data, select = c(tidyselect::vars_select(names(.data), !!x))))
+  names(out_df) <- "x"
 
   x = list(
     data = out_df

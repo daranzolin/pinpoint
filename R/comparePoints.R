@@ -3,7 +3,7 @@
 #' @param data A table of data
 #' @param x A numeric variable.
 #' @param fill dot color. Either an unquoted column name or valid string or hex color
-#' @param compare_mark the x-intercept to compare against values
+#' @param compare_mark the x-intercept to compare against values. Either a numeric value or "diff_from_mean", "diff_from_median", or "z-score"
 #' @param title Visualization title
 #' @param ... optional variables to include in the tooltip
 #'
@@ -13,7 +13,7 @@
 comparePoints <- function(data,
                           x,
                           fill = NULL,
-                          compare_mark = NULL,
+                          compare_mark = "diff_from_mean",
                           title = "",
                           ...) {
 
@@ -28,14 +28,21 @@ comparePoints <- function(data,
     out_df <- as.data.frame(subset(data, select = c(tidyselect::vars_select(names(data), !!x))))
     names(out_df) <- "x"
     unique_cats <- NULL
-    fill_color <- ifelse(is.null(rlang::get_expr(fill)), "blue", rlang::get_expr(fill))
+    fill_color <- ifelse(is.null(rlang::get_expr(fill)), "steelblue", rlang::get_expr(fill))
   }
 
-  if (is.null(compare_mark)) {
-    compare_mark <- mean(out_df$x)
-  }
-  if (compare_mark > max(out_df$x) & compare_mark < min(out_df$x)) {
-    stop("compare_mark outside of x range.", call. = FALSE)
+  if (!is.numeric(compare_mark)) {
+    stopifnot(compare_mark %in% c("diff_from_mean", "diff_from_median", "z-score"))
+    mark_intercept <- switch(compare_mark,
+                             "diff_from_mean" = mean(out_df$x),
+                             "diff_from_median" = median(out_df$x),
+                             "z-score" = mean(out_df$x)
+                             )
+  } else {
+    if (compare_mark > max(out_df$x) & compare_mark < min(out_df$x)) {
+      stop("compare_mark outside of x range.", call. = FALSE)
+    }
+    mark_intercept <- compare_mark
   }
 
   x = purrr::compact(
@@ -44,7 +51,7 @@ comparePoints <- function(data,
       title = title,
       unique_cats = unique_cats,
       fill_color = fill_color,
-      compare_mark = compare_mark
+      mark_intercept = mark_intercept
     )
   )
 
@@ -58,7 +65,7 @@ comparePoints <- function(data,
 #' Style a comparePoints visualization
 #'
 #' @param comparePoints
-#' @param axis_format option to pass to d3.format()
+#' @param number_format option to pass to d3.format()
 #' @param jitter_width jitter width in pixels
 #'
 #' @return
@@ -66,10 +73,10 @@ comparePoints <- function(data,
 #'
 #' @examples
 cp_style <- function(comparePoints,
-                     axis_format = ",",
+                     number_format = ".5",
                      jitter_width = 0) {
 
-  comparePoints$x$axis_format <- axis_format
+  comparePoints$x$number_format <- number_format
   comparePoints$x$jitter_width <- jitter_width
   return(comparePoints)
 }

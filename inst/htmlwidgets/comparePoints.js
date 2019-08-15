@@ -14,7 +14,6 @@ HTMLWidgets.widget({
 
         const data = HTMLWidgets.dataframeToD3(opts.data);
         //console.log(data);
-
         const svg = d3.select(el)
                     .append("svg")
                     .style("width", "100%")
@@ -23,13 +22,13 @@ HTMLWidgets.widget({
         let roundNumber = d3.format(".2f");
         let formatPercent = d3.format(".0%");
         let defined_fill = opts.hasOwnProperty("unique_cats");
-        let centerx = opts.compare_mark;
+        let centerx = opts.mark_intercept;
         let radius = 10;
         let margin = ({top: 20, right: 20, bottom: 50, left: 40});
         let diffLine;
         let diffText;
         let jitter_width = opts.hasOwnProperty('jitter_width') ? opts.jitter_width : 0;
-        let axis_format = opts.hasOwnProperty("axis_format") ?  d3.format(`${opts.axis_format}`) : d3.format(",");
+        let number_format = opts.hasOwnProperty("number_format") ?  d3.format(`${opts.number_format}`) : d3.format(".4");
         let circles;
 
         let x = d3.scaleLinear()
@@ -42,7 +41,7 @@ HTMLWidgets.widget({
             .call(d3.axisBottom(x)
                   .ticks(8)
                   .tickSizeOuter(0)
-                  .tickFormat(d3.format(axis_format)));
+                  .tickFormat(d3.format(number_format)));
 
         let x2 = d3.scaleLinear()
               .domain([margin.left, width - margin.right])
@@ -106,25 +105,6 @@ HTMLWidgets.widget({
                 .attr("fill", opts.fill_color);
         }
 
-        /* let y = d3.scaleBand()
-              .domain(["Line 1"])
-              .range([height-margin.bottom + 10]);   */
-/*
-        if (defined_fill) {
-          circles.attr("fill", d => z(d));
-        } else {
-          circles.attr("fill", opts.fill_color);
-        }
-        */
-        /*
-        let tip = d3.tip()
-              .attr('class', 'd3-tipV')
-              .offset([-10, 0])
-              .html(function(d) {
-                return opts.tooltipHTML;
-              });
-
-        svg.call(tip); */
 
         circles.on("mouseover", function() {
 
@@ -173,7 +153,7 @@ HTMLWidgets.widget({
                 .attr("text-anchor", "middle")
                 .attr("x", x((thisValue + centerx) / 2))
                 .attr("y", p.attr("cy") - 10)
-                .text(d3.format(`${axis_format}`)(diffValue));
+                .text(d3.format(`${number_format}`)(diffValue));
             })
             .on("mouseout", function() {
               d3.select(this).attr("r", radius).attr("stroke-width", 0);
@@ -184,7 +164,6 @@ HTMLWidgets.widget({
             });
 
             svg.append("g").call(xAxis);
-
 
       },
 

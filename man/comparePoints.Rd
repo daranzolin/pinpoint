@@ -5,7 +5,7 @@
 \title{Create a comparePoints visualization}
 \usage{
 comparePoints(data, x, fill = NULL, tooltip = NULL,
-  compare_mark = "diff_from_mean", title = "", ...)
+  compare_mark = "diff_from_mean", title = "")
 }
 \arguments{
 \item{data}{A table of data}
@@ -19,8 +19,6 @@ comparePoints(data, x, fill = NULL, tooltip = NULL,
 \item{compare_mark}{the x-intercept to compare against values. Either a numeric value or "diff_from_mean", "diff_from_median", or "z-score"}
 
 \item{title}{Visualization title}
-
-\item{...}{optional variables to include in the tooltip}
 }
 \description{
 Create a comparePoints visualization

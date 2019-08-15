@@ -6,7 +6,6 @@
 #' @param tooltip Variable to display within tooltip
 #' @param compare_mark the x-intercept to compare against values. Either a numeric value or "diff_from_mean", "diff_from_median", or "z-score"
 #' @param title Visualization title
-#' @param ... optional variables to include in the tooltip
 #'
 #' @import htmlwidgets
 #' @importFrom stats median
@@ -17,8 +16,8 @@ comparePoints <- function(data,
                           fill = NULL,
                           tooltip = NULL,
                           compare_mark = "diff_from_mean",
-                          title = "",
-                          ...) {
+                          title = ""
+                          ) {
 
   x <- rlang::enquo(x)
   fill <- rlang::enquo(fill)

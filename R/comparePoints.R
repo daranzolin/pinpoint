@@ -67,6 +67,10 @@ comparePoints <- function(data,
 #' @param comparePoints
 #' @param number_format option to pass to d3.format()
 #' @param jitter_width jitter width in pixels
+#' @param fill_colors fill colors
+#' @param compare_mark_color color of compare mark
+#' @param greater_than_color color of diff line and text when value is greater than compare_mark_color
+#' @param less_than_color color of diff line and text when value is less than compare_mark_color
 #'
 #' @return
 #' @export
@@ -74,10 +78,18 @@ comparePoints <- function(data,
 #' @examples
 cp_style <- function(comparePoints,
                      number_format = ".5",
-                     jitter_width = 0) {
+                     jitter_width = 0,
+                     fill_colors = NULL,
+                     compare_mark_color = "black",
+                     greater_than_color = "forestgreen",
+                     less_than_color = "firebrick") {
 
+  comparePoints$x$fill_colors = fill_colors
   comparePoints$x$number_format <- number_format
   comparePoints$x$jitter_width <- jitter_width
+  comparePoints$x$compare_mark_color <- compare_mark_color
+  comparePoints$x$greater_than_color <- greater_than_color
+  comparePoints$x$less_than_color <- less_than_color
   return(comparePoints)
 }
 

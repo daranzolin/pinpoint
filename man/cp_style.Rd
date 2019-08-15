@@ -4,12 +4,22 @@
 \alias{cp_style}
 \title{Style a comparePoints visualization}
 \usage{
-cp_style(comparePoints, axis_format = ",", jitter_width = 0)
+cp_style(comparePoints, number_format = ".5", jitter_width = 0,
+  fill_colors = NULL, compare_mark_color = "black",
+  greater_than_color = "forestgreen", less_than_color = "firebrick")
 }
 \arguments{
-\item{axis_format}{option to pass to d3.format()}
+\item{number_format}{option to pass to d3.format()}
 
 \item{jitter_width}{jitter width in pixels}
+
+\item{fill_colors}{fill colors}
+
+\item{compare_mark_color}{color of compare mark}
+
+\item{greater_than_color}{color of diff line and text when value is greater than compare_mark_color}
+
+\item{less_than_color}{color of diff line and text when value is less than compare_mark_color}
 }
 \description{
 Style a comparePoints visualization

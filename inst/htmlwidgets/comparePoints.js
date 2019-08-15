@@ -13,7 +13,8 @@ HTMLWidgets.widget({
       renderValue: function(opts) {
 
         const data = HTMLWidgets.dataframeToD3(opts.data);
-        //console.log(data);
+        console.log(data);
+
         const svg = d3.select(el)
                     .append("svg")
                     .style("width", "100%")
@@ -27,7 +28,12 @@ HTMLWidgets.widget({
         let margin = ({top: 20, right: 20, bottom: 50, left: 40});
         let diffLine;
         let diffText;
+        let default_fill_colors = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"];
         let jitter_width = opts.hasOwnProperty('jitter_width') ? opts.jitter_width : 0;
+        let fill_colors = opts.hasOwnProperty('fill_colors') ? opts.fill_colors : default_fill_colors;
+        let compare_mark_color = opts.hasOwnProperty('compare_mark_color') ? opts.compare_mark_color : "black";
+        let greater_than_color = opts.hasOwnProperty('greater_than_color') ? opts.greater_than_color : "forestgreen";
+        let less_than_color = opts.hasOwnProperty('less_than_color') ? opts.less_than_color : "firebrick";
         let number_format = opts.hasOwnProperty("number_format") ?  d3.format(`${opts.number_format}`) : d3.format(".4");
         let circles;
 
@@ -56,11 +62,12 @@ HTMLWidgets.widget({
                 .attr("y", margin.top)
                 .text(opts.title);
 
+
         if (defined_fill) {
 
             z = d3.scaleOrdinal()
               .domain(data.map(d => d.fill))
-              .range(d3.schemeCategory10);
+              .range(fill_colors);
 
             svg.selectAll("mydots")
                 .data(opts.unique_cats)
@@ -116,7 +123,7 @@ HTMLWidgets.widget({
               .attr("y1", height - margin.bottom)
               .attr("x2", x(centerx))
               .attr("y2", margin.top + 10)
-              .attr("stroke", "#E8BF6A")
+              .attr("stroke", compare_mark_color)
               .attr("stroke-width", 3);
 
             circles.attr("opacity", 0.20);
@@ -138,7 +145,7 @@ HTMLWidgets.widget({
               .attr("y1", p.attr("cy"))
               .attr("x2", p.attr("cx"))
               .attr("y2", p.attr("cy"))
-              .attr("stroke", diffValue < 0 ? "firebrick" : "forestgreen")
+              .attr("stroke", diffValue < 0 ? less_than_color : greater_than_color)
               .attr("stroke-width", 0.75)
               .transition()
               .duration(800)
@@ -148,7 +155,7 @@ HTMLWidgets.widget({
             diffText = svg.append("text")
                 .style("font-size", "18px")
                 .attr("font-weight", "bold")
-                .style("fill", diffValue < 0 ? "firebrick" : "forestgreen")
+                .style("fill", diffValue < 0 ? less_than_color : greater_than_color)
                 .attr("id", "diffValueText")
                 .attr("text-anchor", "middle")
                 .attr("x", x((thisValue + centerx) / 2))
@@ -164,6 +171,7 @@ HTMLWidgets.widget({
             });
 
             svg.append("g").call(xAxis);
+
 
       },
 

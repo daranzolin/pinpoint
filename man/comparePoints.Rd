@@ -4,15 +4,17 @@
 \alias{comparePoints}
 \title{Create a comparePoints visualization}
 \usage{
-comparePoints(data, x, fill = NULL, compare_mark = "diff_from_mean",
-  title = "", ...)
+comparePoints(data, x, fill = NULL, tooltip = NULL,
+  compare_mark = "diff_from_mean", title = "", ...)
 }
 \arguments{
 \item{data}{A table of data}
 
 \item{x}{A numeric variable.}
 
-\item{fill}{dot color. Either an unquoted column name or valid string or hex color}
+\item{fill}{Point color. Either an unquoted column name or valid string/hex color}
+
+\item{tooltip}{Variable to display within tooltip}
 
 \item{compare_mark}{the x-intercept to compare against values. Either a numeric value or "diff_from_mean", "diff_from_median", or "z-score"}
 

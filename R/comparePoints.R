@@ -2,31 +2,37 @@
 #'
 #' @param data A table of data
 #' @param x A numeric variable.
-#' @param fill dot color. Either an unquoted column name or valid string or hex color
+#' @param fill Point color. Either an unquoted column name or valid string/hex color
+#' @param tooltip Variable to display within tooltip
 #' @param compare_mark the x-intercept to compare against values. Either a numeric value or "diff_from_mean", "diff_from_median", or "z-score"
 #' @param title Visualization title
 #' @param ... optional variables to include in the tooltip
 #'
 #' @import htmlwidgets
+#' @importFrom stats median
 #'
 #' @export
 comparePoints <- function(data,
                           x,
                           fill = NULL,
+                          tooltip = NULL,
                           compare_mark = "diff_from_mean",
                           title = "",
                           ...) {
 
   x <- rlang::enquo(x)
   fill <- rlang::enquo(fill)
+  tooltip <- rlang::enquo(tooltip)
+
+  out_df <- data.frame(x = rep(NA, nrow(data)))
+  out_df$x <- data[,rlang::quo_name(x)]
+  out_df$tooltip <- data[,rlang::quo_name(tooltip)]
+
   if (inherits(rlang::get_expr(fill), "name")) {
-    out_df <- as.data.frame(subset(data, select = c(tidyselect::vars_select(names(data), !!x, !!fill))))
-    names(out_df) <- c("x", "fill")
+    out_df$fill <- data[,rlang::quo_name(fill)]
     unique_cats <- sort(unique(out_df$fill))
     fill_color <- NULL
   } else {
-    out_df <- as.data.frame(subset(data, select = c(tidyselect::vars_select(names(data), !!x))))
-    names(out_df) <- "x"
     unique_cats <- NULL
     fill_color <- ifelse(is.null(rlang::get_expr(fill)), "steelblue", rlang::get_expr(fill))
   }
@@ -44,6 +50,7 @@ comparePoints <- function(data,
     }
     mark_intercept <- compare_mark
   }
+
 
   x = purrr::compact(
     list(
@@ -64,7 +71,7 @@ comparePoints <- function(data,
 
 #' Style a comparePoints visualization
 #'
-#' @param comparePoints
+#' @param comparePoints A comparePoints object
 #' @param number_format option to pass to d3.format()
 #' @param jitter_width jitter width in pixels
 #' @param fill_colors fill colors
@@ -72,6 +79,7 @@ comparePoints <- function(data,
 #' @param greater_than_color color of diff line and text when value is greater than compare_mark_color
 #' @param less_than_color color of diff line and text when value is less than compare_mark_color
 #' @param diff_line_type 'solid' or 'dashed'
+#' @param axis_range vector of length two, min and maximium range of axis
 #'
 #' @return
 #' @export
@@ -84,7 +92,8 @@ cp_style <- function(comparePoints,
                      compare_mark_color = "black",
                      greater_than_color = "forestgreen",
                      less_than_color = "firebrick",
-                     diff_line_type = "solid") {
+                     diff_line_type = "dashed",
+                     axis_range = NULL) {
 
   stopifnot(diff_line_type %in% c("solid", "dashed"))
   comparePoints$x$fill_colors = fill_colors
@@ -94,6 +103,7 @@ cp_style <- function(comparePoints,
   comparePoints$x$greater_than_color <- greater_than_color
   comparePoints$x$less_than_color <- less_than_color
   comparePoints$x$line_type <- diff_line_type
+  if (!is.null(axis_range)) comparePoints$x$axis_range <- axis_range
   return(comparePoints)
 }
 

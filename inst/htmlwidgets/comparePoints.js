@@ -12,8 +12,8 @@ HTMLWidgets.widget({
 
       renderValue: function(opts) {
 
-        const data = HTMLWidgets.dataframeToD3(opts.data);
-        console.log(data);
+        let data = HTMLWidgets.dataframeToD3(opts.data);
+        //console.log(data);
 
         const svg = d3.select(el)
                     .append("svg")
@@ -27,7 +27,8 @@ HTMLWidgets.widget({
         let radius = 10;
         let margin = ({top: 20, right: 20, bottom: 50, left: 40});
         let diffLine;
-        let line_dash_value = opts.line_type === "solid" ? "0" : "8 5";
+        let line_dash_value = opts.hasOwnProperty("line_type") ? opts.line_type : "dashed";
+        line_dash_value = line_dash_value === "solid" ? "0" : "8 5";
         let diffText;
         let default_fill_colors = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"];
         let jitter_width = opts.hasOwnProperty('jitter_width') ? opts.jitter_width : 0;
@@ -37,9 +38,15 @@ HTMLWidgets.widget({
         let less_than_color = opts.hasOwnProperty('less_than_color') ? opts.less_than_color : "firebrick";
         let number_format = opts.hasOwnProperty("number_format") ?  d3.format(`${opts.number_format}`) : d3.format(".4");
         let circles;
+        let xdomain = d3.extent(data, d => d.x);
+
+        if (opts.hasOwnProperty("axis_range")) {
+          xdomain = opts.axis_range;
+          data = data.filter(d => d.x > opts.axis_range[0] & d.x < opts.axis_range[1]);
+        }
 
         let x = d3.scaleLinear()
-            .domain(d3.extent(data, d => d.x))
+            .domain(xdomain)
             .range([margin.left, width - margin.right]);
 
         let xAxis = g => g
@@ -52,7 +59,7 @@ HTMLWidgets.widget({
 
         let x2 = d3.scaleLinear()
               .domain([margin.left, width - margin.right])
-              .range(d3.extent(data, d => d.x));
+              .range(xdomain);
 
         titleText = svg.append("text")
                 .style("font-size", "20px")
@@ -62,6 +69,15 @@ HTMLWidgets.widget({
                 .attr("x", width/2)
                 .attr("y", margin.top)
                 .text(opts.title);
+
+        let tip = d3.tip()
+              .attr('class', 'd3-tipV')
+              .offset([-20, 0])
+              .html(function(d) {
+                return `<span>${d.tooltip}</span>`;
+              });
+
+        svg.call(tip);
 
 
         if (defined_fill) {
@@ -75,7 +91,7 @@ HTMLWidgets.widget({
                 .enter()
                 .append("circle")
                   .attr("cx", margin.left)
-                  .attr("cy", (d,i) => { return 100 + i*25})
+                  .attr("cy", (d,i) => { return 50 + i*25})
                   .attr("r", radius)
                   .attr("fill", d => z(d));
 
@@ -84,7 +100,7 @@ HTMLWidgets.widget({
                 .enter()
                 .append("text")
                   .attr("x", margin.left + 20)
-                  .attr("y", (d,i) => { return 100 + i*25})
+                  .attr("y", (d,i) => { return 50 + i*25})
                   .style("fill", d => z(d))
                   .text(d => d)
                   .attr("text-anchor", "left")
@@ -114,7 +130,9 @@ HTMLWidgets.widget({
         }
 
 
-        circles.on("mouseover", function() {
+        circles.on("mouseover", function(d) {
+
+            tip.show(d);
 
             svg.append("g")
               .append("line")
@@ -164,7 +182,8 @@ HTMLWidgets.widget({
                 .attr("y", p.attr("cy") - 10)
                 .text(d3.format(`${number_format}`)(diffValue));
             })
-            .on("mouseout", function() {
+            .on("mouseout", function(d) {
+              tip.hide(d);
               d3.select(this).attr("r", radius).attr("stroke-width", 0);
               circles.attr("opacity", 1);
               svg.select("#diffValueText").remove();

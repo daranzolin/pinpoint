@@ -7,9 +7,11 @@
 cp_style(comparePoints, number_format = ".5", jitter_width = 0,
   fill_colors = NULL, compare_mark_color = "black",
   greater_than_color = "forestgreen", less_than_color = "firebrick",
-  diff_line_type = "solid")
+  diff_line_type = "dashed", axis_range = NULL)
 }
 \arguments{
+\item{comparePoints}{A comparePoints object}
+
 \item{number_format}{option to pass to d3.format()}
 
 \item{jitter_width}{jitter width in pixels}
@@ -23,6 +25,8 @@ cp_style(comparePoints, number_format = ".5", jitter_width = 0,
 \item{less_than_color}{color of diff line and text when value is less than compare_mark_color}
 
 \item{diff_line_type}{'solid' or 'dashed'}
+
+\item{axis_range}{vector of length two, min and maximium range of axis}
 }
 \description{
 Style a comparePoints visualization

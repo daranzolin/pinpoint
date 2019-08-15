@@ -10,5 +10,6 @@ LazyData: true
 Imports: 
     tidyselect,
     rlang,
-    magrittr
+    magrittr,
+    purrr
 RoxygenNote: 6.1.1

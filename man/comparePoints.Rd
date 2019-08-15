@@ -4,8 +4,22 @@
 \alias{comparePoints}
 \title{Create a comparePoints visualization}
 \usage{
-comparePoints(.data, x)
+comparePoints(data, x, fill = NULL, compare_mark = NULL, title = "",
+  ...)
+}
+\arguments{
+\item{data}{A table of data}
+
+\item{x}{A numeric variable.}
+
+\item{fill}{dot color. Either an unquoted column name or valid string or hex color}
+
+\item{compare_mark}{the x-intercept to compare against values}
+
+\item{title}{Visualization title}
+
+\item{...}{optional variables to include in the tooltip}
 }
 \description{
-<Add Description>
+Create a comparePoints visualization
 }

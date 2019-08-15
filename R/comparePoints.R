@@ -71,6 +71,7 @@ comparePoints <- function(data,
 #' @param compare_mark_color color of compare mark
 #' @param greater_than_color color of diff line and text when value is greater than compare_mark_color
 #' @param less_than_color color of diff line and text when value is less than compare_mark_color
+#' @param diff_line_type 'solid' or 'dashed'
 #'
 #' @return
 #' @export
@@ -82,14 +83,17 @@ cp_style <- function(comparePoints,
                      fill_colors = NULL,
                      compare_mark_color = "black",
                      greater_than_color = "forestgreen",
-                     less_than_color = "firebrick") {
+                     less_than_color = "firebrick",
+                     diff_line_type = "solid") {
 
+  stopifnot(diff_line_type %in% c("solid", "dashed"))
   comparePoints$x$fill_colors = fill_colors
   comparePoints$x$number_format <- number_format
   comparePoints$x$jitter_width <- jitter_width
   comparePoints$x$compare_mark_color <- compare_mark_color
   comparePoints$x$greater_than_color <- greater_than_color
   comparePoints$x$less_than_color <- less_than_color
+  comparePoints$x$line_type <- diff_line_type
   return(comparePoints)
 }
 

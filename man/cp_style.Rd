@@ -6,7 +6,8 @@
 \usage{
 cp_style(comparePoints, number_format = ".5", jitter_width = 0,
   fill_colors = NULL, compare_mark_color = "black",
-  greater_than_color = "forestgreen", less_than_color = "firebrick")
+  greater_than_color = "forestgreen", less_than_color = "firebrick",
+  diff_line_type = "solid")
 }
 \arguments{
 \item{number_format}{option to pass to d3.format()}
@@ -20,6 +21,8 @@ cp_style(comparePoints, number_format = ".5", jitter_width = 0,
 \item{greater_than_color}{color of diff line and text when value is greater than compare_mark_color}
 
 \item{less_than_color}{color of diff line and text when value is less than compare_mark_color}
+
+\item{diff_line_type}{'solid' or 'dashed'}
 }
 \description{
 Style a comparePoints visualization

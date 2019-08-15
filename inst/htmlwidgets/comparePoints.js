@@ -27,6 +27,7 @@ HTMLWidgets.widget({
         let radius = 10;
         let margin = ({top: 20, right: 20, bottom: 50, left: 40});
         let diffLine;
+        let line_dash_value = opts.line_type === "solid" ? "0" : "8 5";
         let diffText;
         let default_fill_colors = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"];
         let jitter_width = opts.hasOwnProperty('jitter_width') ? opts.jitter_width : 0;
@@ -146,7 +147,8 @@ HTMLWidgets.widget({
               .attr("x2", p.attr("cx"))
               .attr("y2", p.attr("cy"))
               .attr("stroke", diffValue < 0 ? less_than_color : greater_than_color)
-              .attr("stroke-width", 0.75)
+              .attr("stroke-dasharray", line_dash_value)
+              .attr("stroke-width", 1.1)
               .transition()
               .duration(800)
               .attr("x2", x(centerx))

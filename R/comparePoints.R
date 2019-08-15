@@ -23,12 +23,14 @@ comparePoints <- function(data,
   fill <- rlang::enquo(fill)
   tooltip <- rlang::enquo(tooltip)
 
-  out_df <- data.frame(x = rep(NA, nrow(data)))
-  out_df$x <- data[,rlang::quo_name(x)]
-  out_df$tooltip <- data[,rlang::quo_name(tooltip)]
+
+  data_df <- as.data.frame(data)
+  out_df <- data.frame(x = rep(NA, nrow(data_df)))
+  out_df$x <- data_df[,rlang::quo_name(x)]
+  out_df$tooltip <- data_df[,rlang::quo_name(tooltip)]
 
   if (inherits(rlang::get_expr(fill), "name")) {
-    out_df$fill <- data[,rlang::quo_name(fill)]
+    out_df$fill <- data_df[,rlang::quo_name(fill)]
     unique_cats <- sort(unique(out_df$fill))
     fill_color <- NULL
   } else {

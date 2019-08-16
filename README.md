@@ -3,6 +3,7 @@
 
 [![Travis build
 status](https://travis-ci.org/daranzolin/pinpoint.svg?branch=master)](https://travis-ci.org/daranzolin/pinpoint)
+![CRAN log](http://www.r-pkg.org/badges/version/pinpoint)
 
 ## pinpoint
 

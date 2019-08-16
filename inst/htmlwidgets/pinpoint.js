@@ -1,6 +1,6 @@
 HTMLWidgets.widget({
 
-  name: 'comparePoints',
+  name: 'pinpoint',
 
   type: 'output',
 
@@ -13,7 +13,7 @@ HTMLWidgets.widget({
       renderValue: function(opts) {
 
         let data = HTMLWidgets.dataframeToD3(opts.data);
-        //console.log(data);
+        console.log(data);
 
         const svg = d3.select(el)
                     .append("svg")
@@ -79,7 +79,6 @@ HTMLWidgets.widget({
 
         svg.call(tip);
 
-
         if (defined_fill) {
 
             z = d3.scaleOrdinal()
@@ -128,7 +127,6 @@ HTMLWidgets.widget({
                 .attr("opacity", 0.8)
                 .attr("fill", opts.fill_color);
         }
-
 
         circles.on("mouseover", function(d) {
 
@@ -192,8 +190,6 @@ HTMLWidgets.widget({
             });
 
             svg.append("g").call(xAxis);
-
-
       },
 
       resize: function(width, height) {

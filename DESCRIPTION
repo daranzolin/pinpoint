@@ -1,4 +1,4 @@
-Package: comparePoints
+Package: pinpoint
 Title: Interactively explore and compare a distribution of numeric points
 Version: 0.0.0.9000
 Authors@R: person("David", "Ranzolin", email = "daranzolin@gmail.com", role = c("aut", "cre"))

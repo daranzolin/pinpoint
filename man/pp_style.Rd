@@ -4,13 +4,15 @@
 \alias{pp_style}
 \title{Style a pinpoint visualization}
 \usage{
-pp_style(pinpoint, number_format = ".5", jitter_width = 0,
-  fill_colors = NULL, compare_mark_color = "black",
+pp_style(pinpoint, point_radius = 10, number_format = ".5",
+  jitter_width = 0, fill_colors = NULL, compare_mark_color = "black",
   greater_than_color = "forestgreen", less_than_color = "firebrick",
   diff_line_type = "dashed", axis_range = NULL)
 }
 \arguments{
 \item{pinpoint}{A pinpoint object}
+
+\item{point_radius}{Radius of points (in pixels)}
 
 \item{number_format}{option to pass to d3.format()}
 

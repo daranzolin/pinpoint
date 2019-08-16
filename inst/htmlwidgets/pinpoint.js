@@ -24,14 +24,14 @@ HTMLWidgets.widget({
         let formatPercent = d3.format(".0%");
         let defined_fill = opts.hasOwnProperty("unique_cats");
         let centerx = opts.mark_intercept;
-        let radius = 10;
-        let margin = ({top: 20, right: 20, bottom: 50, left: 40});
+        let margin = ({top: 20, right: 60, bottom: 50, left: 60});
         let diffLine;
         let line_dash_value = opts.hasOwnProperty("line_type") ? opts.line_type : "dashed";
         line_dash_value = line_dash_value === "solid" ? "0" : "8 5";
         let diffText;
         let default_fill_colors = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"];
         let jitter_width = opts.hasOwnProperty('jitter_width') ? opts.jitter_width : 0;
+        let point_radius = opts.hasOwnProperty('point_radius') ? opts.point_radius : 10;
         let fill_colors = opts.hasOwnProperty('fill_colors') ? opts.fill_colors : default_fill_colors;
         let compare_mark_color = opts.hasOwnProperty('compare_mark_color') ? opts.compare_mark_color : "black";
         let greater_than_color = opts.hasOwnProperty('greater_than_color') ? opts.greater_than_color : "forestgreen";
@@ -91,7 +91,7 @@ HTMLWidgets.widget({
                 .append("circle")
                   .attr("cx", margin.left)
                   .attr("cy", (d,i) => { return 50 + i*25})
-                  .attr("r", radius)
+                  .attr("r", point_radius)
                   .attr("fill", d => z(d));
 
             svg.selectAll("mylabels")
@@ -111,7 +111,7 @@ HTMLWidgets.widget({
             .enter().append("circle")
               .attr("cx", d => x(d.x))
               .attr("cy", (d, i) => ((height - margin.bottom) - 15) - Math.random() * jitter_width)
-              .attr("r", radius)
+              .attr("r", point_radius)
               .attr("opacity", 0.8)
               .attr("fill", d => z(d.fill));
 
@@ -123,7 +123,7 @@ HTMLWidgets.widget({
               .enter().append("circle")
                 .attr("cx", d => x(d.x))
                 .attr("cy", (d, i) => ((height - margin.bottom) - 15) - Math.random() * jitter_width)
-                .attr("r", radius)
+                .attr("r", point_radius)
                 .attr("opacity", 0.8)
                 .attr("fill", opts.fill_color);
         }
@@ -150,7 +150,7 @@ HTMLWidgets.widget({
               .attr("stroke", "black")
               .attr("stroke-width", 2)
               .transition()
-              .attr("r", radius * 1.6);
+              .attr("r", point_radius * 1.6);
 
             let thisValue = x2(+p.attr("cx"));
             let diffValue = thisValue - centerx;
@@ -182,7 +182,7 @@ HTMLWidgets.widget({
             })
             .on("mouseout", function(d) {
               tip.hide(d);
-              d3.select(this).attr("r", radius).attr("stroke-width", 0);
+              d3.select(this).attr("r", point_radius).attr("stroke-width", 0);
               circles.attr("opacity", 1);
               svg.select("#diffValueText").remove();
               svg.select("#diffLineX").remove();

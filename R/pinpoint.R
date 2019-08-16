@@ -73,6 +73,7 @@ pinpoint <- function(data,
 #' Style a pinpoint visualization
 #'
 #' @param pinpoint A pinpoint object
+#' @param point_radius Radius of points (in pixels)
 #' @param number_format option to pass to d3.format()
 #' @param jitter_width jitter width in pixels
 #' @param fill_colors fill colors
@@ -87,6 +88,7 @@ pinpoint <- function(data,
 #'
 #' @examples
 pp_style <- function(pinpoint,
+                     point_radius = 10,
                      number_format = ".5",
                      jitter_width = 0,
                      fill_colors = NULL,
@@ -97,6 +99,7 @@ pp_style <- function(pinpoint,
                      axis_range = NULL) {
 
   stopifnot(diff_line_type %in% c("solid", "dashed"))
+  pinpoint$x$point_radius <- point_radius
   pinpoint$x$fill_colors = fill_colors
   pinpoint$x$number_format <- number_format
   pinpoint$x$jitter_width <- jitter_width

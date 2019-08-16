@@ -24,9 +24,10 @@ HTMLWidgets.widget({
         let formatPercent = d3.format(".0%");
         let defined_fill = opts.hasOwnProperty("unique_cats");
         let centerx = opts.mark_intercept;
-        let margin = ({top: 20, right: 60, bottom: 50, left: 60});
+        let margin = ({top: 30, right: 75, bottom: 40, left: 75});
         let diffLine;
         let line_dash_value = opts.hasOwnProperty("line_type") ? opts.line_type : "dashed";
+        let n_ticks = opts.hasOwnProperty("ticks") ? opts.ticks : 8;
         line_dash_value = line_dash_value === "solid" ? "0" : "8 5";
         let diffText;
         let default_fill_colors = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"];
@@ -53,7 +54,7 @@ HTMLWidgets.widget({
             .attr("transform", `translate(0,${height-margin.bottom})`)
             .style("font-size", "16px")
             .call(d3.axisBottom(x)
-                  .ticks(8)
+                  .ticks(n_ticks)
                   .tickSizeOuter(0)
                   .tickFormat(d3.format(number_format)));
 

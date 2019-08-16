@@ -82,6 +82,7 @@ pinpoint <- function(data,
 #' @param less_than_color color of diff line and text when value is less than compare_mark_color
 #' @param diff_line_type 'solid' or 'dashed'
 #' @param axis_range vector of length two, min and maximium range of axis
+#' @param ticks number of axis ticks
 #'
 #' @return
 #' @export
@@ -96,7 +97,8 @@ pp_style <- function(pinpoint,
                      greater_than_color = "forestgreen",
                      less_than_color = "firebrick",
                      diff_line_type = "dashed",
-                     axis_range = NULL) {
+                     axis_range = NULL,
+                     ticks = 8) {
 
   stopifnot(diff_line_type %in% c("solid", "dashed"))
   pinpoint$x$point_radius <- point_radius
@@ -107,6 +109,7 @@ pp_style <- function(pinpoint,
   pinpoint$x$greater_than_color <- greater_than_color
   pinpoint$x$less_than_color <- less_than_color
   pinpoint$x$line_type <- diff_line_type
+  pinpoint$x$ticks <- ticks
   if (!is.null(axis_range)) pinpoint$x$axis_range <- axis_range
   return(pinpoint)
 }

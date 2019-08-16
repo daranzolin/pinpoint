@@ -7,7 +7,7 @@
 pp_style(pinpoint, point_radius = 10, number_format = ".5",
   jitter_width = 0, fill_colors = NULL, compare_mark_color = "black",
   greater_than_color = "forestgreen", less_than_color = "firebrick",
-  diff_line_type = "dashed", axis_range = NULL)
+  diff_line_type = "dashed", axis_range = NULL, ticks = 8)
 }
 \arguments{
 \item{pinpoint}{A pinpoint object}
@@ -29,6 +29,8 @@ pp_style(pinpoint, point_radius = 10, number_format = ".5",
 \item{diff_line_type}{'solid' or 'dashed'}
 
 \item{axis_range}{vector of length two, min and maximium range of axis}
+
+\item{ticks}{number of axis ticks}
 }
 \description{
 Style a pinpoint visualization

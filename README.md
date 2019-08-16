@@ -1,6 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+[![Travis build
+status](https://travis-ci.org/daranzolin/pinpoint.svg?branch=master)](https://travis-ci.org/daranzolin/pinpoint)
+
 ## pinpoint
 
 The goal of pinpoint is to help users explore their smallish data across

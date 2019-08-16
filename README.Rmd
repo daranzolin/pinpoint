@@ -12,6 +12,9 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
+
+[![Travis build status](https://travis-ci.org/daranzolin/pinpoint.svg?branch=master)](https://travis-ci.org/daranzolin/pinpoint)
+
 ## pinpoint
 
 The goal of pinpoint is to help users explore their smallish data across a single axis. There are many ways to study a distribution--histograms, box plots, density plots, etc.--but `pinpoint` lets you see the proverbial trees from the forest. 

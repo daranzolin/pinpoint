@@ -73,6 +73,7 @@ pinpoint <- function(data,
 #' Style a pinpoint visualization
 #'
 #' @param pinpoint A pinpoint object
+#' @param point_radius Radius of points (in pixels)
 #' @param number_format option to pass to d3.format()
 #' @param jitter_width jitter width in pixels
 #' @param fill_colors fill colors
@@ -81,12 +82,14 @@ pinpoint <- function(data,
 #' @param less_than_color color of diff line and text when value is less than compare_mark_color
 #' @param diff_line_type 'solid' or 'dashed'
 #' @param axis_range vector of length two, min and maximium range of axis
+#' @param ticks number of axis ticks
 #'
 #' @return
 #' @export
 #'
 #' @examples
 pp_style <- function(pinpoint,
+                     point_radius = 10,
                      number_format = ".5",
                      jitter_width = 0,
                      fill_colors = NULL,
@@ -95,9 +98,11 @@ pp_style <- function(pinpoint,
                      less_than_color = "firebrick",
                      diff_line_type = "dashed",
                      axis_range = NULL,
-                     draw_line_duration = 800) {
+                     draw_line_duration = 800,
+                     ticks = 8) {
 
   stopifnot(diff_line_type %in% c("solid", "dashed"))
+  pinpoint$x$point_radius <- point_radius
   pinpoint$x$fill_colors = fill_colors
   pinpoint$x$number_format <- number_format
   pinpoint$x$jitter_width <- jitter_width
@@ -105,6 +110,7 @@ pp_style <- function(pinpoint,
   pinpoint$x$greater_than_color <- greater_than_color
   pinpoint$x$less_than_color <- less_than_color
   pinpoint$x$line_type <- diff_line_type
+  pinpoint$x$ticks <- ticks
   if (!is.null(axis_range)) pinpoint$x$axis_range <- axis_range
   pinpoint$x$draw_line_duration <- draw_line_duration
   return(pinpoint)

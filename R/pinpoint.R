@@ -94,7 +94,8 @@ pp_style <- function(pinpoint,
                      greater_than_color = "forestgreen",
                      less_than_color = "firebrick",
                      diff_line_type = "dashed",
-                     axis_range = NULL) {
+                     axis_range = NULL,
+                     draw_line_duration = 800) {
 
   stopifnot(diff_line_type %in% c("solid", "dashed"))
   pinpoint$x$fill_colors = fill_colors
@@ -105,6 +106,7 @@ pp_style <- function(pinpoint,
   pinpoint$x$less_than_color <- less_than_color
   pinpoint$x$line_type <- diff_line_type
   if (!is.null(axis_range)) pinpoint$x$axis_range <- axis_range
+  pinpoint$x$draw_line_duration <- draw_line_duration
   return(pinpoint)
 }
 

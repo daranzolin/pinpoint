@@ -37,6 +37,9 @@ HTMLWidgets.widget({
         let greater_than_color = opts.hasOwnProperty('greater_than_color') ? opts.greater_than_color : "forestgreen";
         let less_than_color = opts.hasOwnProperty('less_than_color') ? opts.less_than_color : "firebrick";
         let number_format = opts.hasOwnProperty("number_format") ?  d3.format(`${opts.number_format}`) : d3.format(".4");
+        let draw_line_duration = opts.hasOwnProperty("draw_line_duration") ? opts.draw_line_duration : 800;
+        let draw_quantiles = opts.hasOwnProperty("quantiles");
+        let draw_deviations = opts.hasOwnProperty("deviations");
         let circles;
         let xdomain = d3.extent(data, d => d.x);
 
@@ -79,6 +82,32 @@ HTMLWidgets.widget({
 
         svg.call(tip);
 
+        if (draw_quantiles) {
+          let quantiles = opts.quantiles;
+          for (let i = 0; i < quantiles.length; i++) {
+            console.log(quantiles[i]);
+              svg.append("line")
+                .attr("x1", x(quantiles[i]))
+                .attr("y1", height - margin.bottom)
+                .attr("x2", x(quantiles[i]))
+                .attr("y2", margin.top + 100)
+                .style("stroke", opts.quantile_line_color);
+          }
+        }
+        if (draw_deviations) {
+          let deviations = opts.deviations;
+          console.log(deviations);
+          console.log(deviations.length);
+          for (let i = 0; i < deviations.length; i++) {
+            console.log(deviations[i]);
+              svg.append("line")
+                .attr("x1", x(deviations[i]))
+                .attr("y1", height - margin.bottom)
+                .attr("x2", x(deviations[i]))
+                .attr("y2", margin.top + 100)
+                .style("stroke", opts.deviations_line_color);
+          }
+        }
         if (defined_fill) {
 
             z = d3.scaleOrdinal()
@@ -139,7 +168,7 @@ HTMLWidgets.widget({
               .attr("x1", x(centerx))
               .attr("y1", height - margin.bottom)
               .attr("x2", x(centerx))
-              .attr("y2", margin.top + 10)
+              .attr("y2", margin.top + 40)
               .attr("stroke", compare_mark_color)
               .attr("stroke-width", 3);
 
@@ -166,7 +195,7 @@ HTMLWidgets.widget({
               .attr("stroke-dasharray", line_dash_value)
               .attr("stroke-width", 1.1)
               .transition()
-              .duration(800)
+              .duration(draw_line_duration)
               .attr("x2", x(centerx))
               .attr("y2", p.attr("cy"));
 

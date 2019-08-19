@@ -7,7 +7,8 @@
 pp_style(pinpoint, number_format = ".5", jitter_width = 0,
   fill_colors = NULL, compare_mark_color = "black",
   greater_than_color = "forestgreen", less_than_color = "firebrick",
-  diff_line_type = "dashed", axis_range = NULL)
+  diff_line_type = "dashed", axis_range = NULL,
+  draw_line_duration = 800)
 }
 \arguments{
 \item{pinpoint}{A pinpoint object}

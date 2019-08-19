@@ -31,6 +31,8 @@ pp_style(pinpoint, point_radius = 10, number_format = ".5",
 
 \item{axis_range}{vector of length two, min and maximium range of axis}
 
+\item{draw_line_duration}{duration in milliseconds to draw the diffline (0 = instant)}
+
 \item{ticks}{number of axis ticks}
 }
 \description{

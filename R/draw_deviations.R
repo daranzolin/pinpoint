@@ -4,6 +4,8 @@
 #' @param deviations either 1, 2, or 3
 #' @param color color of deviation lines
 #'
+#' @importFrom stats sd
+#'
 #' @export
 #'
 #' @examples

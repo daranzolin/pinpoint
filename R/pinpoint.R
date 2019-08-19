@@ -82,6 +82,7 @@ pinpoint <- function(data,
 #' @param less_than_color color of diff line and text when value is less than compare_mark_color
 #' @param diff_line_type 'solid' or 'dashed'
 #' @param axis_range vector of length two, min and maximium range of axis
+#' @param draw_line_duration duration in milliseconds to draw the diffline (0 = instant)
 #' @param ticks number of axis ticks
 #'
 #' @return

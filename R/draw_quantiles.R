@@ -4,6 +4,7 @@
 #' @param probs numeric vector of probabilities with values between 0 and 1
 #' @param color color of quantile lines
 #'
+#' @importFrom stats quantile
 #' @export
 #'
 #' @examples

@@ -13,7 +13,7 @@ HTMLWidgets.widget({
       renderValue: function(opts) {
 
         let data = HTMLWidgets.dataframeToD3(opts.data);
-        console.log(data);
+        //console.log(data);
 
         const svg = d3.select(el)
                     .append("svg")
@@ -31,12 +31,13 @@ HTMLWidgets.widget({
         line_dash_value = line_dash_value === "solid" ? "0" : "8 5";
         let diffText;
         let default_fill_colors = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"];
-        let jitter_width = opts.hasOwnProperty('jitter_width') ? opts.jitter_width : 0;
-        let point_radius = opts.hasOwnProperty('point_radius') ? opts.point_radius : 10;
-        let fill_colors = opts.hasOwnProperty('fill_colors') ? opts.fill_colors : default_fill_colors;
-        let compare_mark_color = opts.hasOwnProperty('compare_mark_color') ? opts.compare_mark_color : "black";
-        let greater_than_color = opts.hasOwnProperty('greater_than_color') ? opts.greater_than_color : "forestgreen";
-        let less_than_color = opts.hasOwnProperty('less_than_color') ? opts.less_than_color : "firebrick";
+        let jitter_width = opts.hasOwnProperty("jitter_width") ? opts.jitter_width : 0;
+        let point_radius = opts.hasOwnProperty("point_radius") ? opts.point_radius : 10;
+        let point_opacity = opts.hasOwnProperty("point_opacity") ? opts.point_opacity : 0.8;
+        let fill_colors = opts.hasOwnProperty("fill_colors") ? opts.fill_colors : default_fill_colors;
+        let compare_mark_color = opts.hasOwnProperty("compare_mark_color") ? opts.compare_mark_color : "black";
+        let greater_than_color = opts.hasOwnProperty("greater_than_color") ? opts.greater_than_color : "forestgreen";
+        let less_than_color = opts.hasOwnProperty("less_than_color") ? opts.less_than_color : "firebrick";
         let number_format = opts.hasOwnProperty("number_format") ?  d3.format(`${opts.number_format}`) : d3.format(".4");
         let draw_line_duration = opts.hasOwnProperty("draw_line_duration") ? opts.draw_line_duration : 800;
         let draw_quantiles = opts.hasOwnProperty("quantiles");
@@ -86,7 +87,6 @@ HTMLWidgets.widget({
         if (draw_quantiles) {
           let quantiles = opts.quantiles;
           for (let i = 0; i < quantiles.length; i++) {
-            console.log(quantiles[i]);
               svg.append("line")
                 .attr("x1", x(quantiles[i]))
                 .attr("y1", height - margin.bottom)
@@ -97,8 +97,6 @@ HTMLWidgets.widget({
         }
         if (draw_deviations) {
           let deviations = opts.deviations;
-          console.log(deviations);
-          console.log(deviations.length);
           for (let i = 0; i < deviations.length; i++) {
             console.log(deviations[i]);
               svg.append("line")
@@ -142,7 +140,7 @@ HTMLWidgets.widget({
               .attr("cx", d => x(d.x))
               .attr("cy", (d, i) => ((height - margin.bottom) - 15) - Math.random() * jitter_width)
               .attr("r", point_radius)
-              .attr("opacity", 0.8)
+              .attr("opacity", point_opacity)
               .attr("fill", d => z(d.fill));
 
         } else {
@@ -154,7 +152,7 @@ HTMLWidgets.widget({
                 .attr("cx", d => x(d.x))
                 .attr("cy", (d, i) => ((height - margin.bottom) - 15) - Math.random() * jitter_width)
                 .attr("r", point_radius)
-                .attr("opacity", 0.8)
+                .attr("opacity", point_opacity)
                 .attr("fill", opts.fill_color);
         }
 
@@ -213,7 +211,7 @@ HTMLWidgets.widget({
             .on("mouseout", function(d) {
               tip.hide(d);
               d3.select(this).attr("r", point_radius).attr("stroke-width", 0);
-              circles.attr("opacity", 1);
+              circles.attr("opacity", point_opacity);
               svg.select("#diffValueText").remove();
               svg.select("#diffLineX").remove();
               svg.select("#centerXLine").remove();

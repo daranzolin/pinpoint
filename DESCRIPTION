@@ -3,7 +3,7 @@ Title: Interactively explore and compare a distribution of numeric points
 Version: 0.0.0.9000
 Authors@R: person("David", "Ranzolin", email = "daranzolin@gmail.com", role = c("aut", "cre"))
 Description: Align a distribution of points across a single axis. Interactively explore variance and their proximal relationships.
-Depends: R (>= 3.5.1)
+Depends: R (>= 3.6.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -6,9 +6,10 @@
 \usage{
 pp_style(pinpoint, point_radius = 10, point_opacity = 0.9,
   number_format = ".5", jitter_width = 0, fill_colors = NULL,
-  compare_mark_color = "black", greater_than_color = "forestgreen",
-  less_than_color = "firebrick", diff_line_type = "dashed",
-  axis_range = NULL, draw_line_duration = 800, ticks = 8)
+  compare_to_stroke_color = "black", compare_to_stroke_width = 1.1,
+  greater_than_color = "forestgreen", less_than_color = "firebrick",
+  diff_line_type = "dashed", axis_range = NULL,
+  draw_line_duration = 800, ticks = 8)
 }
 \arguments{
 \item{pinpoint}{A pinpoint object}
@@ -23,7 +24,9 @@ pp_style(pinpoint, point_radius = 10, point_opacity = 0.9,
 
 \item{fill_colors}{fill colors}
 
-\item{compare_mark_color}{color of compare mark}
+\item{compare_to_stroke_color}{color of compare mark}
+
+\item{compare_to_stroke_width}{width of compare mark}
 
 \item{greater_than_color}{color of diff line and text when value is greater than compare_mark_color}
 

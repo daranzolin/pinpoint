@@ -4,7 +4,8 @@
 \alias{draw_deviations}
 \title{Draw standard deviation lines from the mean}
 \usage{
-draw_deviations(pinpoint, deviations = 1, color = "red")
+draw_deviations(pinpoint, deviations = 1, color = "red",
+  stroke_width = 1)
 }
 \arguments{
 \item{pinpoint}{a pinpoint visualization}
@@ -12,6 +13,8 @@ draw_deviations(pinpoint, deviations = 1, color = "red")
 \item{deviations}{either 1, 2, or 3}
 
 \item{color}{color of deviation lines}
+
+\item{stroke_width}{width of drawn strokes}
 }
 \description{
 Draw standard deviation lines from the mean

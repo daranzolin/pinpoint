@@ -4,10 +4,11 @@
 #' @param x A numeric variable.
 #' @param fill Point color. Either an unquoted column name or valid string/hex color
 #' @param tooltip Variable to display within tooltip
-#' @param compare_mark the x-intercept to compare against values. Either a numeric value or "diff_from_mean", "diff_from_median", or "z-score"
+#' @param compare_to the x-intercept to compare against values. Either a numeric value or "diff_from_mean", "diff_from_median", or "z-score"
 #' @param title Visualization title
 #'
 #' @import htmlwidgets
+#' @importFrom rlang enquo quo_name get_expr
 #' @importFrom stats median
 #'
 #' @export
@@ -15,51 +16,52 @@ pinpoint <- function(data,
                           x,
                           fill = NULL,
                           tooltip = NULL,
-                          compare_mark = "diff_from_mean",
+                          compare_to = "diff_from_mean",
                           title = ""
                           ) {
 
-  x <- rlang::enquo(x)
-  fill <- rlang::enquo(fill)
-  tooltip <- rlang::enquo(tooltip)
-
+  x <- enquo(x)
+  fill <- enquo(fill)
+  tooltip <- enquo(tooltip)
+  compare_to <- enquo(compare_to)
 
   data_df <- as.data.frame(data)
-  out_df <- data.frame(x = rep(NA, nrow(data_df)))
-  out_df$x <- data_df[,rlang::quo_name(x)]
-  out_df$tooltip <- data_df[,rlang::quo_name(tooltip)]
+  out_df <- data.frame(x = rep(NA, nrow(data_df)), stringsAsFactors = FALSE)
+  out_df$x <- data_df[,quo_name(x)]
+  if (!is.numeric(out_df$x)) stop("x must be numeric", call. = FALSE)
+  out_df$tooltip <- data_df[,quo_name(tooltip)]
 
-  if (inherits(rlang::get_expr(fill), "name")) {
-    out_df$fill <- data_df[,rlang::quo_name(fill)]
+  if (inherits(get_expr(fill), "name")) {
+    out_df$fill <- data_df[,quo_name(fill)]
     unique_cats <- sort(unique(out_df$fill))
     fill_color <- NULL
   } else {
     unique_cats <- NULL
-    fill_color <- ifelse(is.null(rlang::get_expr(fill)), "steelblue", rlang::get_expr(fill))
+    fill_color <- ifelse(is.null(get_expr(fill)), "steelblue", get_expr(fill))
   }
-
-  if (!is.numeric(compare_mark)) {
-    stopifnot(compare_mark %in% c("diff_from_mean", "diff_from_median", "z-score"))
-    mark_intercept <- switch(compare_mark,
-                             "diff_from_mean" = mean(out_df$x),
-                             "diff_from_median" = median(out_df$x),
-                             "z-score" = mean(out_df$x)
-                             )
-  } else {
-    if (compare_mark > max(out_df$x) & compare_mark < min(out_df$x)) {
-      stop("compare_mark outside of x range.", call. = FALSE)
+  cm_expr <- get_expr(compare_to)
+  if (class(cm_expr) == "name") {
+    out_df$compare_to <- data_df[,quo_name(compare_to)]
+  } else if (class(cm_expr) == "numeric") {
+    if (cm_expr > max(out_df$x) & cm_expr < min(out_df$x)) {
+      stop("compare_to outside of x range.", call. = FALSE)
     }
-    mark_intercept <- compare_mark
+    out_df$compare_to <- cm_expr
+  } else {
+    stopifnot(cm_expr %in% c("diff_from_mean", "diff_from_median", "z-score"))
+    out_df$compare_to <- switch(cm_expr,
+                                "diff_from_mean" = mean(out_df$x),
+                                "diff_from_median" = median(out_df$x),
+                                "z-score" = mean(out_df$x)
+    )
   }
-
 
   x = purrr::compact(
     list(
       data = out_df,
       title = title,
       unique_cats = unique_cats,
-      fill_color = fill_color,
-      mark_intercept = mark_intercept
+      fill_color = fill_color
     )
   )
 
@@ -78,7 +80,8 @@ pinpoint <- function(data,
 #' @param number_format option to pass to d3.format()
 #' @param jitter_width jitter width in pixels
 #' @param fill_colors fill colors
-#' @param compare_mark_color color of compare mark
+#' @param compare_to_stroke_color color of compare mark
+#' @param compare_to_stroke_width width of compare mark
 #' @param greater_than_color color of diff line and text when value is greater than compare_mark_color
 #' @param less_than_color color of diff line and text when value is less than compare_mark_color
 #' @param diff_line_type 'solid' or 'dashed'
@@ -96,7 +99,8 @@ pp_style <- function(pinpoint,
                      number_format = ".5",
                      jitter_width = 0,
                      fill_colors = NULL,
-                     compare_mark_color = "black",
+                     compare_to_stroke_color = "black",
+                     compare_to_stroke_width = 1.1,
                      greater_than_color = "forestgreen",
                      less_than_color = "firebrick",
                      diff_line_type = "dashed",
@@ -110,7 +114,8 @@ pp_style <- function(pinpoint,
   pinpoint$x$fill_colors = fill_colors
   pinpoint$x$number_format <- number_format
   pinpoint$x$jitter_width <- jitter_width
-  pinpoint$x$compare_mark_color <- compare_mark_color
+  pinpoint$x$compare_to_stroke_color <- compare_to_stroke_color
+  pinpoint$x$compare_to_stroke_width <- compare_to_stroke_width
   pinpoint$x$greater_than_color <- greater_than_color
   pinpoint$x$less_than_color <- less_than_color
   pinpoint$x$line_type <- diff_line_type

@@ -23,24 +23,29 @@ HTMLWidgets.widget({
         let roundNumber = d3.format(".2f");
         let formatPercent = d3.format(".0%");
         let defined_fill = opts.hasOwnProperty("unique_cats");
-        let centerx = opts.mark_intercept;
+        //let centerx = opts.mark_intercept;
         let margin = ({top: 30, right: 75, bottom: 40, left: 75});
         let diffLine;
         let line_dash_value = opts.hasOwnProperty("line_type") ? opts.line_type : "dashed";
         let n_ticks = opts.hasOwnProperty("ticks") ? opts.ticks : 8;
         line_dash_value = line_dash_value === "solid" ? "0" : "8 5";
         let diffText;
+        let compare_to_stroke_width = opts.hasOwnProperty("compare_to_stroke_width") ? opts.compare_to_stroke_width : 1.1;
         let default_fill_colors = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"];
         let jitter_width = opts.hasOwnProperty("jitter_width") ? opts.jitter_width : 0;
         let point_radius = opts.hasOwnProperty("point_radius") ? opts.point_radius : 10;
         let point_opacity = opts.hasOwnProperty("point_opacity") ? opts.point_opacity : 0.8;
         let fill_colors = opts.hasOwnProperty("fill_colors") ? opts.fill_colors : default_fill_colors;
-        let compare_mark_color = opts.hasOwnProperty("compare_mark_color") ? opts.compare_mark_color : "black";
+        let compare_mark_color = opts.hasOwnProperty("compare_to_stroke_color") ? opts.compare_to_stroke_color : "black";
         let greater_than_color = opts.hasOwnProperty("greater_than_color") ? opts.greater_than_color : "forestgreen";
         let less_than_color = opts.hasOwnProperty("less_than_color") ? opts.less_than_color : "firebrick";
         let number_format = opts.hasOwnProperty("number_format") ?  d3.format(`${opts.number_format}`) : d3.format(".4");
         let draw_line_duration = opts.hasOwnProperty("draw_line_duration") ? opts.draw_line_duration : 800;
         let draw_quantiles = opts.hasOwnProperty("quantiles");
+        let quantiles_stroke_width = opts.hasOwnProperty("quantiles_stroke_width") ? opts.quantiles_stroke_width : 1;
+        let quantiles_stroke_color = opts.hasOwnProperty("quantiles_stroke_color") ? opts.quantiles_stroke_color : "grey";
+        let deviations_stroke_width = opts.hasOwnProperty("deviations_stroke_width") ? opts.deviations_stroke_width : 1;
+        let deviations_stroke_color = opts.hasOwnProperty("deviations_stroke_color") ? opts.deviations_stroke_color : "red";
         let draw_deviations = opts.hasOwnProperty("deviations");
         let circles;
         let xdomain = d3.extent(data, d => d.x);
@@ -92,19 +97,20 @@ HTMLWidgets.widget({
                 .attr("y1", height - margin.bottom)
                 .attr("x2", x(quantiles[i]))
                 .attr("y2", margin.top + 100)
-                .style("stroke", opts.quantile_line_color);
+                .attr("stroke-width", quantiles_stroke_width)
+                .style("stroke", quantiles_stroke_color);
           }
         }
         if (draw_deviations) {
           let deviations = opts.deviations;
           for (let i = 0; i < deviations.length; i++) {
-            console.log(deviations[i]);
               svg.append("line")
                 .attr("x1", x(deviations[i]))
                 .attr("y1", height - margin.bottom)
                 .attr("x2", x(deviations[i]))
                 .attr("y2", margin.top + 100)
-                .style("stroke", opts.deviations_line_color);
+                .attr("stroke-width", deviations_stroke_width)
+                .style("stroke", deviations_stroke_color);
           }
         }
         if (defined_fill) {
@@ -164,12 +170,12 @@ HTMLWidgets.widget({
               .append("line")
               .attr("class", "diffLine")
               .attr("id", "centerXLine")
-              .attr("x1", x(centerx))
+              .attr("x1", x(d.compare_to))
               .attr("y1", height - margin.bottom)
-              .attr("x2", x(centerx))
+              .attr("x2", x(d.compare_to))
               .attr("y2", margin.top + 40)
               .attr("stroke", compare_mark_color)
-              .attr("stroke-width", 3);
+              .attr("stroke-width", compare_to_stroke_width);
 
             circles.attr("opacity", 0.20);
             let p = d3.select(this);
@@ -181,7 +187,7 @@ HTMLWidgets.widget({
               .attr("r", point_radius * 1.6);
 
             let thisValue = x2(+p.attr("cx"));
-            let diffValue = thisValue - centerx;
+            let diffValue = thisValue - d.compare_to;
 
             diffLine = svg.append("line")
               .attr("class", "diffLine")
@@ -195,7 +201,7 @@ HTMLWidgets.widget({
               .attr("stroke-width", 1.1)
               .transition()
               .duration(draw_line_duration)
-              .attr("x2", x(centerx))
+              .attr("x2", x(d.compare_to))
               .attr("y2", p.attr("cy"));
 
             diffText = svg.append("text")
@@ -204,7 +210,7 @@ HTMLWidgets.widget({
                 .style("fill", diffValue < 0 ? less_than_color : greater_than_color)
                 .attr("id", "diffValueText")
                 .attr("text-anchor", "middle")
-                .attr("x", x((thisValue + centerx) / 2))
+                .attr("x", x((thisValue + d.compare_to) / 2))
                 .attr("y", p.attr("cy") - 10)
                 .text(d3.format(`${number_format}`)(diffValue));
             })

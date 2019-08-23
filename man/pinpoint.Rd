@@ -5,7 +5,7 @@
 \title{Create a pinpoint visualization}
 \usage{
 pinpoint(data, x, fill = NULL, tooltip = NULL,
-  compare_mark = "diff_from_mean", title = "")
+  compare_to = "diff_from_mean", title = "")
 }
 \arguments{
 \item{data}{A table of data}
@@ -16,7 +16,7 @@ pinpoint(data, x, fill = NULL, tooltip = NULL,
 
 \item{tooltip}{Variable to display within tooltip}
 
-\item{compare_mark}{the x-intercept to compare against values. Either a numeric value or "diff_from_mean", "diff_from_median", or "z-score"}
+\item{compare_to}{the x-intercept to compare against values. Either a numeric value or "diff_from_mean", "diff_from_median", or "z-score"}
 
 \item{title}{Visualization title}
 }

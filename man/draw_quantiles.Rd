@@ -4,7 +4,8 @@
 \alias{draw_quantiles}
 \title{Draw quantile lines}
 \usage{
-draw_quantiles(pinpoint, probs = c(0.25, 0.75), color = "grey")
+draw_quantiles(pinpoint, probs = c(0.25, 0.75), color = "grey",
+  stroke_width = 1)
 }
 \arguments{
 \item{pinpoint}{a pinpoint visualization}
@@ -12,6 +13,8 @@ draw_quantiles(pinpoint, probs = c(0.25, 0.75), color = "grey")
 \item{probs}{numeric vector of probabilities with values between 0 and 1}
 
 \item{color}{color of quantile lines}
+
+\item{stroke_width}{width of drawn strokes}
 }
 \description{
 Draw quantile lines

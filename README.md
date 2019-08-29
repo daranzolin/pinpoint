@@ -34,7 +34,7 @@ mtcars %>%
   pinpoint(x = mpg, 
            fill = cyl, 
            tooltip = name,
-           compare_mark = "diff_from_mean",
+           compare_to = "diff_from_mean",
            title = "MPG by Cylinder") %>% 
   pp_style(jitter_width = 60,
            number_format = ".2")

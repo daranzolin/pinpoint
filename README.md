@@ -24,7 +24,7 @@ install_github("daranzolin/pinpoint")
 ### Example
 
 [A comprehensive introduction to the package can be viewed
-here.](http://rpubs.com/daranzolin/pinpoint-intro)
+here.](http://rpubs.com/daranzolin/pinpoint_intro)
 
 ``` r
 library(pinpoint)
